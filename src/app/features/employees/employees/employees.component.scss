@@ -1,0 +1,36 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: #666;
+  }
+}
+
+.table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.employee-table {
+  width: 100%;
+}
+
+th {
+  font-weight: 600;
+}
+
+td,
+th {
+  padding: 12px 16px;
+}

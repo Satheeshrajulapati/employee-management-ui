@@ -7,16 +7,29 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'dashboard',
+    path: '',
     loadComponent: () =>
-      import('./features/dashboard/dashboard.component')
-        .then(m => m.DashboardComponent)
-  },
-  {
-    path: 'employees',
-    loadComponent: () =>
-      import('./features/employees/components/employee-list/employee-list.component')
-        .then(m => m.EmployeeListComponent)
+      import('./core/layout/layout.component')
+        .then(m => m.LayoutComponent),
+
+        children: [
+          { path: 'dashboard',
+            loadComponent: () =>
+              import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+          },
+
+          {
+            path: 'employees',
+            loadComponent: () => 
+              import('./features/employees/employees/employees.component').then(m => m.EmployeesComponent)
+          },
+
+          {
+            path: 'settings',
+            loadComponent: () =>
+              import('./features/settings/settings.component').then(m => m.SettingsComponent)
+          }
+        ]
   },
   {
     path: '**',
