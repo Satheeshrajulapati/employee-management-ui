@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class EmployeeService {
   private readonly apiUrl = 'http://localhost:8080/api/employees';
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.apiUrl);
+    return this.http.get<Employee[]>(this.apiUrl).pipe(delay(500)); // Simulate a delay for loading spinner demonstration
   }
 
   employeesById(id: number): Observable<Employee> {
