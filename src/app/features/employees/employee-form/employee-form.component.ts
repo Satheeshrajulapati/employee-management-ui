@@ -47,15 +47,15 @@ export class EmployeeFormComponent {
   isEditMode = false;
 
   employeeForm = this.fb.group({
-  employeeName: ['', Validators.required],
+    employeeName: ['', Validators.required],
 
-  email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email]],
 
-  department: ['', Validators.required],
+    department: ['', Validators.required],
 
-  salary: [null as number | null, [Validators.required, Validators.min(1)]],
+    salary: [null as number | null, [Validators.required, Validators.min(1)]],
 
-  joiningDate: [null as Date | null, Validators.required],
+    joiningDate: [null as Date | null, Validators.required],
   });
 
   constructor() {
@@ -63,62 +63,53 @@ export class EmployeeFormComponent {
   }
 
   private initializeForm(): void {
-  this.isEditMode = this.dialogData?.mode === 'edit';
+    this.isEditMode = this.dialogData?.mode === 'edit';
+    if (
+      this.isEditMode && this.dialogData?.employee
+    ) {
+      this.patchEmployee(this.dialogData.employee);
+    }
+  }
 
-  if (
-    this.isEditMode && this.dialogData?.employee
-   ) {
-    this.patchEmployee(this.dialogData.employee);
-   }
- }
-
-
- private patchEmployee(employee: Employee): void {
-
-  this.employeeForm.patchValue({
-    employeeName: employee.employeeName,
-    email: employee.email,
-    department: employee.department,
-    salary: employee.salary,
-    joiningDate: new Date(employee.joiningDate)
-  });
+  private patchEmployee(employee: Employee): void {
+    this.employeeForm.patchValue({
+      employeeName: employee.employeeName,
+      email: employee.email,
+      department: employee.department,
+      salary: employee.salary,
+      joiningDate: new Date(employee.joiningDate)
+    });
   }
 
   private formatDate(date: Date): string {
 
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day}`;
   }
 
   onSubmit(): void {
 
     if (this.employeeForm.invalid) {
-
       this.employeeForm.markAllAsTouched();
-
       return;
     }
 
     const formValue = this.employeeForm.getRawValue();
-
-      const employee = {
-    employeeName: formValue.employeeName!,
-    email: formValue.email!,
-    department: formValue.department!,
-    salary: Number(formValue.salary),
-    joiningDate: formValue.joiningDate ? this.formatDate(formValue.joiningDate) : null
-   };
-
+    const employee = {
+      employeeName: formValue.employeeName!,
+      email: formValue.email!,
+      department: formValue.department!,
+      salary: Number(formValue.salary),
+      joiningDate: formValue.joiningDate ? this.formatDate(formValue.joiningDate) : null
+    };
     console.log('New Employee Data:', employee);
-
     this.dialogRef.close(employee);
   }
 
   onCancel(): void {
-
     this.dialogRef.close();
   }
 }

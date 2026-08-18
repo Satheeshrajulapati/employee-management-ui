@@ -4,11 +4,9 @@
   margin: 0 auto;
 }
 
-
 /* ================================
    Page Header
 ================================ */
-
 .page-header {
   display: flex;
   align-items: center;
@@ -43,7 +41,6 @@
 /* ================================
    Filter Card
 ================================ */
-
 .filter-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -78,21 +75,18 @@
 
 
 /* Search */
-
 .search-field {
   width: 360px;
 }
 
 
 /* Department */
-
 .department-field {
   width: 220px;
 }
 
 
 /* Clear button */
-
 .clear-button {
   height: 56px;
   border-radius: 8px;
@@ -102,11 +96,9 @@
   margin-right: 6px;
 }
 
-
 /* ================================
    Table Card
 ================================ */
-
 .table-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -118,19 +110,22 @@
   overflow-x: auto;
 }
 
+.loading-container {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ================================
    Table
 ================================ */
-
 .employee-table {
   width: 100%;
   min-width: 850px;
 }
 
-
 /* Header */
-
 .employee-table th {
   background: #f8fafc;
   color: #374151;
@@ -140,9 +135,7 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-
 /* Rows */
-
 .employee-table td {
   height: 64px;
   color: #374151;
@@ -150,24 +143,18 @@
   border-bottom: 1px solid #f0f1f3;
 }
 
-
 /* Hover */
-
 .employee-table tr.mat-mdc-row:hover {
   background: #f8fafc;
 }
 
-
 /* Employee name */
-
 .employee-name {
   font-weight: 500;
   color: #111827;
 }
 
-
 /* Department */
-
 .department-badge {
   display: inline-flex;
   align-items: center;
@@ -179,17 +166,13 @@
   font-weight: 500;
 }
 
-
 /* Salary */
-
 .salary {
   font-weight: 500;
   color: #111827;
 }
 
-
 /* Actions */
-
 .action-buttons {
   display: flex;
   align-items: center;
@@ -198,7 +181,6 @@
 
 
 /* No data */
-
 .no-data {
   text-align: center;
   padding: 40px !important;
@@ -209,7 +191,6 @@
 /* ================================
    Paginator
 ================================ */
-
 mat-paginator {
   border-top: 1px solid #e5e7eb;
 }
@@ -218,7 +199,6 @@ mat-paginator {
 /* ================================
    Responsive
 ================================ */
-
 @media (max-width: 768px) {
 
   .employees-page {
