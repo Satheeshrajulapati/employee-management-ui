@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Employee } from '../models/employee.model';
+import { Employee } from '../../../core/interfaces/employee.interface';
 import { delay, Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,10 @@ export class EmployeeService {
 
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://localhost:8080/api/employees';
+  private readonly apiUrl =  `${environment.apiUrl}/employees`;
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.apiUrl).pipe(delay(500)); // Simulate a delay for loading spinner demonstration
+    return this.http.get<Employee[]>(this.apiUrl).pipe(delay(500));
   }
 
   employeesById(id: number): Observable<Employee> {
@@ -30,6 +31,16 @@ export class EmployeeService {
 
   deleteEmployee(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  searchEmployees(value:string) : Observable<Employee[]>{
+    return this.http.get<Employee[]>(`${this.apiUrl}/search`,
+      { params: { value } }
+    );
+  }
+
+  getDepartments(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/departments`);
   }
 
 }
