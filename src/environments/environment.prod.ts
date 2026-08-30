@@ -1,4 +1,4 @@
 export const environment = {
-    production: true,
-    apiUrl: 'https://YOUR-BACKEND-URL/api'
-}
+  production: true,
+  apiUrl: 'https://employee-management-hfig.onrender.com/api'
+};
