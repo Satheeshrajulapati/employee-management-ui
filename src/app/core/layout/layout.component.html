@@ -9,7 +9,10 @@
 
     <div class="user-section">
       <span>Welcome, Satheesh</span>
-      <button type="button">Logout</button>
+      <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
     </div>
 
   </header>
@@ -23,18 +26,15 @@
 
       <nav>
 
-        <a routerLink="/dashboard"
-           routerLinkActive="active">
+        <a routerLink="/dashboard" routerLinkActive="active">
           Dashboard
         </a>
 
-        <a routerLink="/employees"
-           routerLinkActive="active">
+        <a routerLink="/employees" routerLinkActive="active">
           Employees
         </a>
 
-        <a routerLink="/settings"
-           routerLinkActive="active">
+        <a routerLink="/settings" routerLinkActive="active">
           Settings
         </a>
 

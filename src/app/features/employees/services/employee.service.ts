@@ -11,7 +11,7 @@ export class EmployeeService {
 
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl =  `${environment.apiUrl}/employees`;
+  private readonly apiUrl = `${environment.apiUrl}/employees`;
 
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.apiUrl).pipe(delay(500));
@@ -33,7 +33,7 @@ export class EmployeeService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  searchEmployees(value:string) : Observable<Employee[]>{
+  searchEmployees(value: string): Observable<Employee[]> {
     return this.http.get<Employee[]>(`${this.apiUrl}/search`,
       { params: { value } }
     );

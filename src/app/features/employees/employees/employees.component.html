@@ -6,10 +6,12 @@
       <p>Manage and maintain your employee records</p>
     </div>
 
+    @if(isAdmin){
     <button mat-flat-button color="primary" type="button" class="add-button" (click)="addEmployee()">
       <mat-icon>add</mat-icon>
       Add Employee
     </button>
+    }
   </div>
 
   <!-- Filters -->
@@ -112,6 +114,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let employee">
+            @if (isAdmin) {
             <div class="action-buttons">
               <!-- Edit -->
               <button mat-icon-button type="button" class="edit-button" matTooltip="Edit employee"
@@ -125,6 +128,7 @@
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
+            }
           </td>
         </ng-container>
 

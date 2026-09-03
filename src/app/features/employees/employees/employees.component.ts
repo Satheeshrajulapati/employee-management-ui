@@ -21,6 +21,7 @@ import { Employee } from '../../../core/interfaces/employee.interface';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-employees',
@@ -47,6 +48,9 @@ export class EmployeesComponent implements OnInit, AfterViewInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
+
+  private readonly authService = inject(AuthService);
+  readonly isAdmin = this.authService.isAdmin();
 
   readonly searchSubject$ = new BehaviorSubject<string>('');
   readonly departmentSubject$ = new BehaviorSubject<string>('');
