@@ -19,6 +19,8 @@ export class LayoutComponent {
 
   private authService = inject(AuthService);
   private readonly router = inject(Router);
+  readonly username = this.authService.getUsername();
+  readonly role = this.authService.getRole();
 
   logout(): void {
     this.authService.logout();

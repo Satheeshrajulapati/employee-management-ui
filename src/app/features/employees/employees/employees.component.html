@@ -148,7 +148,9 @@
     </div>
 
     <!-- Pagination -->
-    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+    <mat-paginator [length]="totalElements" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"
+      [showFirstLastButtons]="true">
+    </mat-paginator>
     }
   </div>
 </div>

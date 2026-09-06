@@ -8,11 +8,28 @@
     </div>
 
     <div class="user-section">
-      <span>Welcome, Satheesh</span>
+
+      <div class="user-info">
+        <mat-icon>account_circle</mat-icon>
+
+        <div>
+          <span class="welcome-text">
+            Welcome, {{ username }}
+          </span>
+
+          @if (role) {
+          <span class="user-role">
+            {{ role }}
+          </span>
+          }
+        </div>
+      </div>
+
       <button mat-button (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout
       </button>
+
     </div>
 
   </header>

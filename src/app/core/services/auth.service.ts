@@ -22,7 +22,7 @@ export class AuthService {
 
   private readonly apiUrl = `${environment.apiUrl}/auth`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(request: LoginRequest): Observable<AuthResponse> {
     return this.http
@@ -39,29 +39,29 @@ export class AuthService {
   }
 
   getRole(): Role | null {
-  const token = this.getToken();
+    const token = this.getToken();
 
-  if (!token || this.isTokenExpired()) {
-    return null;
-  }
-
-  try {
-    const payload = JSON.parse(
-      atob(token.split('.')[1])
-    );
-
-    const role = payload.role;
-
-    if (Object.values(Role).includes(role)) {
-      return role as Role;
+    if (!token || this.isTokenExpired()) {
+      return null;
     }
 
-    return null;
+    try {
+      const payload = JSON.parse(
+        atob(token.split('.')[1])
+      );
 
-  } catch {
-    return null;
+      const role = payload.role;
+
+      if (Object.values(Role).includes(role)) {
+        return role as Role;
+      }
+
+      return null;
+
+    } catch {
+      return null;
+    }
   }
-}
 
   isAdmin(): boolean {
     return this.getRole() === Role.ADMIN;
@@ -72,38 +72,57 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-  return !!this.getToken() && !this.isTokenExpired();
-}
+    return !!this.getToken() && !this.isTokenExpired();
+  }
 
   logout(): void {
     localStorage.removeItem('token');
   }
 
   isTokenExpired(): boolean {
-  const token = this.getToken();
+    const token = this.getToken();
 
-  if (!token) {
-    return true;
-  }
-
-  try {
-    const payload = JSON.parse(
-      atob(token.split('.')[1])
-    );
-
-    const expiry = payload.exp;
-
-    if (!expiry) {
+    if (!token) {
       return true;
     }
 
-    const currentTime = Math.floor(Date.now() / 1000);
+    try {
+      const payload = JSON.parse(
+        atob(token.split('.')[1])
+      );
 
-    return expiry < currentTime;
+      const expiry = payload.exp;
 
-  } catch {
-    return true;
+      if (!expiry) {
+        return true;
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      return expiry < currentTime;
+
+    } catch {
+      return true;
+    }
   }
-}
+
+  getUsername(): string | null {
+    const token = this.getToken();
+
+    if (!token || this.isTokenExpired()) {
+      return null;
+    }
+
+    try {
+      const payload = JSON.parse(
+        atob(token.split('.')[1])
+      );
+
+      return payload.sub ?? null;
+
+    } catch {
+      return null;
+    }
+  }
 
 }
