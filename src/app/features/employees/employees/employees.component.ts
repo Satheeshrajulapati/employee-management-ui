@@ -696,4 +696,78 @@ export class EmployeesComponent implements OnInit {
       }
     );
   }
+
+  exportEmployees(): void {
+
+    this.isLoading = true;
+
+    this.employeeService
+      .exportEmployees(
+        this.searchValue,
+        this.selectedDepartment
+      )
+      .pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+
+        next: (blob: Blob) => {
+
+          const url =
+            window.URL.createObjectURL(blob);
+
+          const link =
+            document.createElement('a');
+
+          link.href = url;
+
+          link.download =
+            this.buildExportFileName();
+
+          document.body.appendChild(link);
+
+          link.click();
+
+          document.body.removeChild(link);
+
+          window.URL.revokeObjectURL(url);
+
+          this.isLoading = false;
+
+          this.showSnackBar(
+            'Employees exported successfully'
+          );
+        },
+
+        error: () => {
+
+          this.isLoading = false;
+
+          this.showSnackBar(
+            'Unable to export employees'
+          );
+        }
+      });
+  }
+
+  private buildExportFileName(): string {
+
+    const today =
+      new Date()
+        .toISOString()
+        .split('T')[0];
+
+    if (this.selectedDepartment) {
+
+      return `employees-${this.selectedDepartment}-${today}.xlsx`;
+    }
+
+    if (this.searchValue.trim()) {
+
+      return `employees-search-${today}.xlsx`;
+    }
+
+    return `employees-${today}.xlsx`;
+  }
+
 }

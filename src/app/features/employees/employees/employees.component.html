@@ -6,12 +6,18 @@
       <p>Manage and maintain your employee records</p>
     </div>
 
-    @if(isAdmin){
-    <button mat-flat-button color="primary" type="button" class="add-button" (click)="addEmployee()">
-      <mat-icon>add</mat-icon>
-      Add Employee
-    </button>
-    }
+    <div class="header-actions">
+      <button mat-stroked-button type="button" (click)="exportEmployees()">
+        <mat-icon>download</mat-icon>Export Excel
+      </button>
+
+      @if (isAdmin) {
+      <button mat-flat-button color="primary" type="button" class="add-button" (click)="addEmployee()">
+        <mat-icon>add</mat-icon>
+        Add Employee
+      </button>
+      }
+    </div>
   </div>
 
   <!-- Filters -->

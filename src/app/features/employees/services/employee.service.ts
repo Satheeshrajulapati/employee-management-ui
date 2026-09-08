@@ -72,4 +72,24 @@ export class EmployeeService {
       `${this.apiUrl}/departments`
     );
   }
+
+  exportEmployees(
+    search: string = '',
+    department: string = ''
+  ): Observable<Blob> {
+
+    const params = {
+      search: search.trim(),
+      department
+    };
+
+    return this.http.get(
+      `${this.apiUrl}/export`,
+      {
+        params,
+        responseType: 'blob'
+      }
+    );
+  }
+
 }
