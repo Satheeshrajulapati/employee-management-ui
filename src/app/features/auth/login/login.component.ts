@@ -18,6 +18,8 @@ import {
   MatSnackBarModule
 } from '@angular/material/snack-bar';
 
+import { finalize } from 'rxjs';
+
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -63,32 +65,48 @@ export class LoginComponent {
 
     const request = this.loginForm.getRawValue();
 
-    this.authService.login(request).subscribe({
-      next: () => {
-        this.loading = false;
+    this.authService
+      .login(
+        request.username,
+        request.password
+      )
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
 
-        this.snackBar.open(
-          'Login successful',
-          'Close',
-          {
-            duration: 3000
+        next: response => {
+
+          if (response.mustChangePassword) {
+            this.router.navigate([
+              '/change-password'
+            ]);
+
+            return;
           }
-        );
 
-        this.router.navigate(['/employees']);
-      },
+          this.router.navigate([
+            '/employees'
+          ]);
+        },
 
-      error: () => {
-        this.loading = false;
+        error: error => {
 
-        this.snackBar.open(
-          'Invalid username or password',
-          'Close',
-          {
-            duration: 3000
-          }
-        );
-      }
-    });
+          const message =
+            error?.error?.message ??
+            'Invalid username or password';
+
+          this.snackBar.open(
+            message,
+            'Close',
+            {
+              duration: 3000
+            }
+          );
+        }
+
+      });
   }
 }

@@ -3,31 +3,59 @@
   <!-- Header -->
   <header class="app-header">
 
-    <div class="app-title">
-      Employee Management
+    <div class="left-header">
+
+      <button
+        mat-icon-button
+        class="menu-button"
+        type="button"
+        (click)="toggleSidebar()">
+
+        <mat-icon>menu</mat-icon>
+
+      </button>
+
+      <div class="app-title">
+        Employee Management
+      </div>
+
     </div>
 
     <div class="user-section">
 
       <div class="user-info">
-        <mat-icon>account_circle</mat-icon>
+
+        <mat-icon>
+          account_circle
+        </mat-icon>
 
         <div>
+
           <span class="welcome-text">
             Welcome, {{ username }}
           </span>
 
           @if (role) {
-          <span class="user-role">
-            {{ role }}
-          </span>
+            <span class="user-role">
+              {{ role }}
+            </span>
           }
+
         </div>
+
       </div>
 
-      <button mat-button (click)="logout()">
+      <button
+        mat-button
+        class="logout-button"
+        (click)="logout()">
+
         <mat-icon>logout</mat-icon>
-        Logout
+
+        <span class="logout-text">
+          Logout
+        </span>
+
       </button>
 
     </div>
@@ -35,24 +63,89 @@
   </header>
 
 
+  <!-- Mobile overlay -->
+  @if (sidebarOpen) {
+
+    <div
+      class="sidebar-overlay"
+      (click)="closeSidebar()">
+    </div>
+
+  }
+
+
   <!-- Body -->
   <div class="app-body">
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside
+      class="sidebar"
+      [class.sidebar-open]="sidebarOpen">
 
       <nav>
 
-        <a routerLink="/dashboard" routerLinkActive="active">
-          Dashboard
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          (click)="closeSidebar()">
+
+          <mat-icon>
+            dashboard
+          </mat-icon>
+
+          <span>
+            Dashboard
+          </span>
+
         </a>
 
-        <a routerLink="/employees" routerLinkActive="active">
-          Employees
+        <a
+          routerLink="/employees"
+          routerLinkActive="active"
+          (click)="closeSidebar()">
+
+          <mat-icon>
+            groups
+          </mat-icon>
+
+          <span>
+            Employees
+          </span>
+
         </a>
 
-        <a routerLink="/settings" routerLinkActive="active">
-          Settings
+        @if (isAdmin()) {
+
+          <a
+            routerLink="/admin/users"
+            routerLinkActive="active"
+            (click)="closeSidebar()">
+
+            <mat-icon>
+              manage_accounts
+            </mat-icon>
+
+            <span>
+              User Management
+            </span>
+
+          </a>
+
+        }
+
+        <a
+          routerLink="/settings"
+          routerLinkActive="active"
+          (click)="closeSidebar()">
+
+          <mat-icon>
+            settings
+          </mat-icon>
+
+          <span>
+            Settings
+          </span>
+
         </a>
 
       </nav>
@@ -63,7 +156,8 @@
     <!-- Main Content -->
     <main class="main-content">
 
-      <router-outlet></router-outlet>
+      <router-outlet>
+      </router-outlet>
 
     </main>
 

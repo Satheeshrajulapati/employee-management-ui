@@ -1,0 +1,53 @@
+@use '../../../../styles/variables' as *;
+
+.user-management-container {
+  width: 100%;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  min-width: 750px;
+}
+
+.user-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: $text-color;
+}
+
+.user-table td {
+  border-bottom: 1px solid $border-color;
+}
+
+.user-name {
+  font-weight: 600;
+  color: $text-color;
+}
+
+.mobile-user-list {
+  display: none;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .table-container {
+    display: none;
+  }
+
+  .mobile-user-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    padding: $spacing-md;
+  }
+
+}

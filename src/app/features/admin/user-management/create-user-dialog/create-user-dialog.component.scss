@@ -1,0 +1,33 @@
+.create-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 420px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dialog-actions {
+  padding: 16px 24px 20px;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+
+  .create-user-form {
+    min-width: 0;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    padding: 12px 16px 16px;
+  }
+
+  .dialog-actions button {
+    width: 100%;
+  }
+}

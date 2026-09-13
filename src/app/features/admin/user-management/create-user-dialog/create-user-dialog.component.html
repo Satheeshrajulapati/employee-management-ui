@@ -1,0 +1,144 @@
+<h2 mat-dialog-title>
+  Create User
+</h2>
+
+<mat-dialog-content>
+
+  <form
+    [formGroup]="createUserForm"
+    class="create-user-form">
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>Username</mat-label>
+
+      <input
+        matInput
+        formControlName="username">
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.username.hasError('required')
+        ">
+        Username is required
+      </mat-error>
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.username.hasError('minlength')
+        ">
+        Username must be at least 3 characters
+      </mat-error>
+
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>Email</mat-label>
+
+      <input
+        matInput
+        type="email"
+        formControlName="email">
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.email.hasError('required')
+        ">
+        Email is required
+      </mat-error>
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.email.hasError('email')
+        ">
+        Enter a valid email
+      </mat-error>
+
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Temporary Password
+      </mat-label>
+
+      <input
+        matInput
+        formControlName="temporaryPassword"
+        [type]="hidePassword ? 'password' : 'text'">
+
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hidePassword = !hidePassword">
+
+        <mat-icon>
+          {{
+            hidePassword
+              ? 'visibility_off'
+              : 'visibility'
+          }}
+        </mat-icon>
+
+      </button>
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.temporaryPassword.hasError('required')
+        ">
+        Temporary password is required
+      </mat-error>
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.temporaryPassword.hasError('minlength')
+        ">
+        Password must be at least 8 characters
+      </mat-error>
+
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions
+  align="end"
+  class="dialog-actions">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()"
+    [disabled]="loading">
+
+    Cancel
+
+  </button>
+
+  <button
+    mat-raised-button
+    type="button"
+    (click)="createUser()"
+    [disabled]="loading">
+
+    <mat-spinner
+      *ngIf="loading"
+      diameter="20">
+    </mat-spinner>
+
+    <span *ngIf="!loading">
+      Create User
+    </span>
+
+  </button>
+
+</mat-dialog-actions>

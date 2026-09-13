@@ -1,8 +1,21 @@
+@use '../../../../styles/variables' as *;
+
+
+/* ================================
+   Employees Page
+================================ */
+
 .employees-page {
-  padding: 32px;
+  width: 100%;
   max-width: 1600px;
+
   margin: 0 auto;
 }
+
+
+/* ================================
+   Header Actions
+================================ */
 
 .header-actions {
   display: flex;
@@ -10,220 +23,314 @@
   gap: 12px;
 }
 
-/* ================================
-   Page Header
-================================ */
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 28px;
-}
-
-.page-title h1 {
-  margin: 0;
-  font-size: 32px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-}
-
-.page-title p {
-  margin: 6px 0 0;
-  color: #6b7280;
-  font-size: 15px;
-}
-
-.add-button {
-  height: 44px;
-  padding: 0 20px;
-  border-radius: 8px;
-}
-
-.add-button mat-icon {
-  margin-right: 6px;
-}
-
 
 /* ================================
-   Filter Card
+   Filters
 ================================ */
-.filter-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 20px;
-}
 
 .filter-header {
   margin-bottom: 18px;
 }
 
-.filter-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.filter-header span {
-  display: block;
-  margin-top: 4px;
-  color: #6b7280;
-  font-size: 14px;
-}
-
 .filter-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
   flex-wrap: wrap;
+
+  gap: 16px;
 }
 
-
-/* Search */
 .search-field {
-  width: 360px;
+  flex: 1 1 320px;
 }
 
-
-/* Department */
 .department-field {
-  width: 220px;
+  flex: 0 1 220px;
 }
 
-
-/* Clear button */
 .clear-button {
-  height: 56px;
-  border-radius: 8px;
+  min-height: 56px;
 }
 
-.clear-button mat-icon {
-  margin-right: 6px;
-}
-
-/* ================================
-   Table Card
-================================ */
-.table-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-.loading-container {
-  min-height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 /* ================================
    Table
 ================================ */
+
+.table-card {
+  overflow: hidden;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .employee-table {
   width: 100%;
   min-width: 850px;
 }
 
-/* Header */
 .employee-table th {
+  height: 52px;
+
   background: #f8fafc;
   color: #374151;
+
   font-size: 13px;
   font-weight: 600;
-  height: 52px;
-  border-bottom: 1px solid #e5e7eb;
+
+  border-bottom: 1px solid $border-color;
 }
 
-/* Rows */
 .employee-table td {
   height: 64px;
+
   color: #374151;
+
   font-size: 14px;
+
   border-bottom: 1px solid #f0f1f3;
 }
 
-/* Hover */
 .employee-table tr.mat-mdc-row:hover {
   background: #f8fafc;
 }
 
-/* Employee name */
+
+/* ================================
+   Employee Content
+================================ */
+
 .employee-name {
-  font-weight: 500;
-  color: #111827;
+  color: $text-color;
+  font-weight: 600;
 }
 
-/* Department */
+.employee-email {
+  margin-top: 3px;
+
+  color: $muted-text;
+
+  font-size: 13px;
+
+  word-break: break-word;
+}
+
 .department-badge {
   display: inline-flex;
   align-items: center;
+
   padding: 5px 10px;
+
   border-radius: 999px;
+
   background: #eef2ff;
   color: #4338ca;
+
   font-size: 12px;
   font-weight: 500;
 }
 
-/* Salary */
 .salary {
+  color: $text-color;
   font-weight: 500;
-  color: #111827;
 }
 
-/* Actions */
+
+/* ================================
+   Actions
+================================ */
+
 .action-buttons {
   display: flex;
   align-items: center;
+
   gap: 2px;
 }
 
 
-/* No data */
+/* ================================
+   Empty / Loading
+================================ */
+
 .no-data {
-  text-align: center;
   padding: 40px !important;
-  color: #6b7280;
+
+  text-align: center;
+
+  color: $muted-text;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 300px;
+}
+
+
+/* ================================
+   Mobile Employee Cards
+================================ */
+
+.mobile-employee-list {
+  display: none;
+}
+
+.employee-card {
+  padding: 16px;
+
+  background: $surface-color;
+
+  border: 1px solid $border-color;
+  border-radius: 10px;
+}
+
+.employee-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+.employee-card-body {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  font-size: 13px;
+}
+
+.label {
+  color: $muted-text;
+}
+
+.employee-card-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 16px;
+}
+
+.employee-card-actions button {
+  flex: 1;
+}
+
+.mobile-no-data {
+  padding: 32px;
+
+  text-align: center;
+
+  color: $muted-text;
 }
 
 
 /* ================================
    Paginator
 ================================ */
+
 mat-paginator {
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid $border-color;
 }
 
 
 /* ================================
-   Responsive
+   Tablet
 ================================ */
+
 @media (max-width: 768px) {
 
-  .employees-page {
-    padding: 20px;
+  .header-actions {
+    width: 100%;
   }
 
-  .page-header {
-    align-items: flex-start;
-    gap: 16px;
+  .header-actions button {
+    flex: 1;
+  }
+
+  .filter-controls {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .search-field,
-  .department-field {
+  .department-field,
+  .clear-button {
     width: 100%;
   }
 
-  .clear-button {
+}
+
+
+/* ================================
+   Mobile
+================================ */
+
+@media (max-width: 600px) {
+
+  .employees-page {
+    padding: 0;
+  }
+
+  .header-actions {
+    flex-direction: column;
+  }
+
+  .header-actions button {
     width: 100%;
+  }
+
+  .table-wrapper {
+    display: none;
+  }
+
+  .mobile-employee-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 12px;
+  }
+
+  .employee-card-header {
+    flex-direction: column;
+  }
+
+  .employee-card-actions {
+    flex-direction: column;
+  }
+
+}
+
+
+/* ================================
+   Small Phones
+================================ */
+
+@media (max-width: 400px) {
+
+  .employee-card {
+    padding: 12px;
+  }
+
+  .info-row {
+    align-items: flex-start;
   }
 
 }

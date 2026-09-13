@@ -1,0 +1,60 @@
+@use './variables' as *;
+
+.app-loading-container {
+  min-height: 250px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-empty-state {
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: $spacing-sm;
+
+  color: $muted-text;
+
+  text-align: center;
+}
+
+.app-empty-state mat-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+}
+
+.app-muted-text {
+  margin-top: 4px;
+
+  color: $muted-text;
+  font-size: 13px;
+
+  word-break: break-word;
+}
+
+.app-info-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.app-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: $spacing-md;
+
+  font-size: 13px;
+}
+
+.app-info-label {
+  color: $muted-text;
+}

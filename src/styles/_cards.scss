@@ -1,0 +1,20 @@
+@use './variables' as *;
+
+.app-mobile-card {
+  padding: $spacing-md;
+
+  background: $surface-color;
+
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+}
+
+.app-mobile-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: $spacing-md;
+
+  margin-bottom: $spacing-md;
+}

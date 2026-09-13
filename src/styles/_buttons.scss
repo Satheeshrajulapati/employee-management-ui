@@ -1,0 +1,6 @@
+@use './variables' as *;
+
+.app-button {
+  min-height: 44px;
+  border-radius: $radius-md;
+}

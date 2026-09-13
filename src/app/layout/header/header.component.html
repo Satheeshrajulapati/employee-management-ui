@@ -1,7 +1,43 @@
 <header class="header">
-  <h2>Employee Management</h2>
 
-  <div class="user-info">
-    Welcome, User
+  <div class="brand">
+    Employee Management
   </div>
+
+  <nav class="nav-links">
+
+    <a
+      mat-button
+      routerLink="/employees"
+      routerLinkActive="active-link">
+
+      <mat-icon>groups</mat-icon>
+
+      <span>
+        Employees
+      </span>
+
+    </a>
+
+    @if (isAdmin()) {
+
+      <a
+        mat-button
+        routerLink="/admin/users"
+        routerLinkActive="active-link">
+
+        <mat-icon>
+          manage_accounts
+        </mat-icon>
+
+        <span>
+          User Management
+        </span>
+
+      </a>
+
+    }
+
+  </nav>
+
 </header>

@@ -10,9 +10,12 @@ interface LoginRequest {
   password: string;
 }
 
-interface AuthResponse {
+export interface AuthResponse {
   message: string;
-  token: string;
+  token: string | null;
+  username: string;
+  role: Role;
+  mustChangePassword: boolean;
 }
 
 @Injectable({
@@ -22,16 +25,67 @@ export class AuthService {
 
   private readonly apiUrl = `${environment.apiUrl}/auth`;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private readonly http: HttpClient
+  ) { }
 
-  login(request: LoginRequest): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/login`, request)
-      .pipe(
-        tap(response => {
-          localStorage.setItem('token', response.token);
-        })
-      );
+  login(
+    username: string,
+    password: string
+  ): Observable<AuthResponse> {
+
+    const request: LoginRequest = {
+      username,
+      password
+    };
+
+    return this.http.post<AuthResponse>(
+      `${this.apiUrl}/login`,
+      request
+    ).pipe(
+
+      tap(response => {
+
+        if (!response.token) {
+          return;
+        }
+
+        localStorage.setItem(
+          'token',
+          response.token
+        );
+
+        localStorage.setItem(
+          'username',
+          response.username
+        );
+
+        localStorage.setItem(
+          'role',
+          response.role
+        );
+
+        localStorage.setItem(
+          'mustChangePassword',
+          String(response.mustChangePassword)
+        );
+      })
+
+    );
+  }
+
+  changePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Observable<void> {
+
+    return this.http.put<void>(
+      `${environment.apiUrl}/account/change-password`,
+      {
+        currentPassword,
+        newPassword
+      }
+    );
   }
 
   getToken(): string | null {
@@ -39,6 +93,7 @@ export class AuthService {
   }
 
   getRole(): Role | null {
+
     const token = this.getToken();
 
     if (!token || this.isTokenExpired()) {
@@ -46,13 +101,16 @@ export class AuthService {
     }
 
     try {
+
       const payload = JSON.parse(
         atob(token.split('.')[1])
       );
 
       const role = payload.role;
 
-      if (Object.values(Role).includes(role)) {
+      if (
+        Object.values(Role).includes(role)
+      ) {
         return role as Role;
       }
 
@@ -63,50 +121,8 @@ export class AuthService {
     }
   }
 
-  isAdmin(): boolean {
-    return this.getRole() === Role.ADMIN;
-  }
-
-  isUser(): boolean {
-    return this.getRole() === Role.USER;
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken() && !this.isTokenExpired();
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
-  }
-
-  isTokenExpired(): boolean {
-    const token = this.getToken();
-
-    if (!token) {
-      return true;
-    }
-
-    try {
-      const payload = JSON.parse(
-        atob(token.split('.')[1])
-      );
-
-      const expiry = payload.exp;
-
-      if (!expiry) {
-        return true;
-      }
-
-      const currentTime = Math.floor(Date.now() / 1000);
-
-      return expiry < currentTime;
-
-    } catch {
-      return true;
-    }
-  }
-
   getUsername(): string | null {
+
     const token = this.getToken();
 
     if (!token || this.isTokenExpired()) {
@@ -114,6 +130,7 @@ export class AuthService {
     }
 
     try {
+
       const payload = JSON.parse(
         atob(token.split('.')[1])
       );
@@ -125,4 +142,64 @@ export class AuthService {
     }
   }
 
+  mustChangePassword(): boolean {
+
+    return localStorage.getItem(
+      'mustChangePassword'
+    ) === 'true';
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === Role.ADMIN;
+  }
+
+  isUser(): boolean {
+    return this.getRole() === Role.USER;
+  }
+
+  isLoggedIn(): boolean {
+
+    return !!this.getToken()
+      && !this.isTokenExpired();
+  }
+
+  isTokenExpired(): boolean {
+
+    const token = this.getToken();
+
+    if (!token) {
+      return true;
+    }
+
+    try {
+
+      const payload = JSON.parse(
+        atob(token.split('.')[1])
+      );
+
+      const expiry = payload.exp;
+
+      if (!expiry) {
+        return true;
+      }
+
+      const currentTime =
+        Math.floor(Date.now() / 1000);
+
+      return expiry < currentTime;
+
+    } catch {
+      return true;
+    }
+  }
+
+  logout(): void {
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    localStorage.removeItem(
+      'mustChangePassword'
+    );
+  }
 }
