@@ -34,4 +34,23 @@ export class UserService {
       request
     );
   }
+
+  updateUserStatus(
+    userId: number,
+    enabled: boolean
+  ): Observable<User> {
+
+    return this.http.patch<User>(
+      `${this.apiUrl}/${userId}/status`,
+      { enabled }
+    );
+  }
+
+  resetUserPassword(userId: number, temporaryPassword: string): Observable<void> {
+    return this.http.put<void>(
+      `${this.apiUrl}/${userId}/reset-password`,
+      { temporaryPassword }
+    );
+  }
+
 }

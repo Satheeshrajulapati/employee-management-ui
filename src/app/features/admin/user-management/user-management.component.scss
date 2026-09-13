@@ -11,17 +11,12 @@
 
 .user-table {
   width: 100%;
-  min-width: 750px;
+  min-width: 850px;
 }
 
 .user-table th {
   background: #f8fafc;
   font-weight: 600;
-  color: $text-color;
-}
-
-.user-table td {
-  border-bottom: 1px solid $border-color;
 }
 
 .user-name {
@@ -29,15 +24,18 @@
   color: $text-color;
 }
 
+.app-action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .mobile-user-list {
   display: none;
 }
 
-
-/* Mobile */
-
 @media (max-width: 600px) {
-
   .table-container {
     display: none;
   }
@@ -46,8 +44,6 @@
     display: flex;
     flex-direction: column;
     gap: $spacing-md;
-
     padding: $spacing-md;
   }
-
 }

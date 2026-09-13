@@ -1,5 +1,21 @@
 @use './variables' as *;
 
+.app-card {
+  background: $surface-color;
+
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+
+  padding: $spacing-lg;
+}
+
+.app-card-no-padding {
+  padding: 0;
+}
+
+
+/* Reusable mobile card */
+
 .app-mobile-card {
   padding: $spacing-md;
 

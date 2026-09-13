@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
 import { environment } from '../../../environments/environment';
 import { Role } from '../enums/role.enum';
 
 interface LoginRequest {
   username: string;
   password: string;
+}
+
+interface JwtPayload {
+  sub?: string;
+  role?: Role;
+  exp?: number;
 }
 
 export interface AuthResponse {
@@ -22,131 +27,66 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-
   private readonly apiUrl = `${environment.apiUrl}/auth`;
 
-  constructor(
-    private readonly http: HttpClient
-  ) { }
+  private readonly storageKeys = {
+    token: 'token',
+    mustChangePassword: 'mustChangePassword'
+  } as const;
 
-  login(
-    username: string,
-    password: string
-  ): Observable<AuthResponse> {
+  constructor(private readonly http: HttpClient) {}
 
-    const request: LoginRequest = {
-      username,
-      password
-    };
+  login(username: string, password: string): Observable<AuthResponse> {
+    const request: LoginRequest = { username, password };
 
-    return this.http.post<AuthResponse>(
-      `${this.apiUrl}/login`,
-      request
-    ).pipe(
-
-      tap(response => {
-
-        if (!response.token) {
-          return;
-        }
-
-        localStorage.setItem(
-          'token',
-          response.token
-        );
-
-        localStorage.setItem(
-          'username',
-          response.username
-        );
-
-        localStorage.setItem(
-          'role',
-          response.role
-        );
-
-        localStorage.setItem(
-          'mustChangePassword',
-          String(response.mustChangePassword)
-        );
-      })
-
-    );
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/login`, request)
+      .pipe(
+        tap(response => {
+          if (response.token) {
+            this.storeAuthData(response);
+          }
+        })
+      );
   }
 
   changePassword(
     currentPassword: string,
     newPassword: string
   ): Observable<void> {
-
     return this.http.put<void>(
       `${environment.apiUrl}/account/change-password`,
-      {
-        currentPassword,
-        newPassword
-      }
+      { currentPassword, newPassword }
     );
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  getRole(): Role | null {
-
-    const token = this.getToken();
-
-    if (!token || this.isTokenExpired()) {
-      return null;
-    }
-
-    try {
-
-      const payload = JSON.parse(
-        atob(token.split('.')[1])
-      );
-
-      const role = payload.role;
-
-      if (
-        Object.values(Role).includes(role)
-      ) {
-        return role as Role;
-      }
-
-      return null;
-
-    } catch {
-      return null;
-    }
+    return localStorage.getItem(this.storageKeys.token);
   }
 
   getUsername(): string | null {
+    return this.getTokenPayload()?.sub ?? null;
+  }
 
-    const token = this.getToken();
+  getRole(): Role | null {
+    const role = this.getTokenPayload()?.role;
 
-    if (!token || this.isTokenExpired()) {
-      return null;
-    }
-
-    try {
-
-      const payload = JSON.parse(
-        atob(token.split('.')[1])
-      );
-
-      return payload.sub ?? null;
-
-    } catch {
-      return null;
-    }
+    return role && Object.values(Role).includes(role)
+      ? role
+      : null;
   }
 
   mustChangePassword(): boolean {
-
     return localStorage.getItem(
-      'mustChangePassword'
+      this.storageKeys.mustChangePassword
     ) === 'true';
+  }
+
+  setMustChangePassword(value: boolean): void {
+    localStorage.setItem(
+      this.storageKeys.mustChangePassword,
+      String(value)
+    );
   }
 
   isAdmin(): boolean {
@@ -158,48 +98,53 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-
-    return !!this.getToken()
-      && !this.isTokenExpired();
+    return !!this.getToken() && !this.isTokenExpired();
   }
 
   isTokenExpired(): boolean {
+    const expiry = this.getTokenPayload()?.exp;
 
-    const token = this.getToken();
-
-    if (!token) {
+    if (!expiry) {
       return true;
     }
 
-    try {
-
-      const payload = JSON.parse(
-        atob(token.split('.')[1])
-      );
-
-      const expiry = payload.exp;
-
-      if (!expiry) {
-        return true;
-      }
-
-      const currentTime =
-        Math.floor(Date.now() / 1000);
-
-      return expiry < currentTime;
-
-    } catch {
-      return true;
-    }
+    return expiry < Math.floor(Date.now() / 1000);
   }
 
   logout(): void {
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('role');
-    localStorage.removeItem(
-      'mustChangePassword'
+    Object.values(this.storageKeys).forEach(key =>
+      localStorage.removeItem(key)
     );
+  }
+
+  private storeAuthData(response: AuthResponse): void {
+    if (!response.token) {
+      return;
+    }
+
+    localStorage.setItem(
+      this.storageKeys.token,
+      response.token
+    );
+
+    this.setMustChangePassword(
+      response.mustChangePassword
+    );
+  }
+
+  private getTokenPayload(): JwtPayload | null {
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(
+        atob(token.split('.')[1])
+      ) as JwtPayload;
+    } catch {
+      return null;
+    }
   }
 }

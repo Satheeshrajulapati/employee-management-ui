@@ -5,10 +5,9 @@ import {
   RouterLinkActive,
   RouterOutlet
 } from '@angular/router';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -19,27 +18,23 @@ import { AuthService } from '../services/auth.service';
     RouterLinkActive,
     RouterOutlet,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuModule
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly username =
-    this.authService.getUsername();
-
-  readonly role =
-    this.authService.getRole();
+  readonly username = this.authService.getUsername();
+  readonly role = this.authService.getRole();
 
   sidebarOpen = false;
 
   toggleSidebar(): void {
-    this.sidebarOpen =
-      !this.sidebarOpen;
+    this.sidebarOpen = !this.sidebarOpen;
   }
 
   closeSidebar(): void {
@@ -50,14 +45,13 @@ export class LayoutComponent {
     return this.authService.isAdmin();
   }
 
+  goToChangePassword(): void {
+    this.router.navigate(['/change-password']);
+  }
+
   logout(): void {
-
     this.closeSidebar();
-
     this.authService.logout();
-
-    this.router.navigate([
-      '/login'
-    ]);
+    this.router.navigate(['/login']);
   }
 }

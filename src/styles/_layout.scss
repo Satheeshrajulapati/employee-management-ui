@@ -1,12 +1,24 @@
 @use './variables' as *;
 
+
+/* ================================
+   Loading
+================================ */
+
 .app-loading-container {
   min-height: 250px;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: $spacing-lg;
 }
+
+
+/* ================================
+   Empty State
+================================ */
 
 .app-empty-state {
   min-height: 220px;
@@ -18,25 +30,42 @@
 
   gap: $spacing-sm;
 
-  color: $muted-text;
+  padding: $spacing-lg;
 
+  color: $muted-text;
   text-align: center;
 }
 
 .app-empty-state mat-icon {
   width: 40px;
   height: 40px;
+
   font-size: 40px;
 }
+
+.app-empty-state p {
+  margin: 0;
+}
+
+
+/* ================================
+   Supporting / Muted Text
+================================ */
 
 .app-muted-text {
   margin-top: 4px;
 
   color: $muted-text;
+
   font-size: 13px;
 
   word-break: break-word;
 }
+
+
+/* ================================
+   Information List
+================================ */
 
 .app-info-list {
   display: flex;
@@ -57,4 +86,55 @@
 
 .app-info-label {
   color: $muted-text;
+
+  flex-shrink: 0;
+}
+
+
+/* ================================
+   Action Row
+================================ */
+
+.app-action-row {
+  display: flex;
+  align-items: center;
+
+  gap: $spacing-sm;
+
+  margin-top: $spacing-md;
+}
+
+.app-action-row .app-button {
+  flex: 1;
+}
+
+
+/* ================================
+   Mobile
+================================ */
+
+@media (max-width: 600px) {
+
+  .app-loading-container {
+    min-height: 180px;
+    padding: $spacing-md;
+  }
+
+  .app-empty-state {
+    min-height: 180px;
+    padding: $spacing-md;
+  }
+
+  .app-info-row {
+    align-items: flex-start;
+  }
+
+  .app-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-action-row .app-button {
+    width: 100%;
+  }
 }
