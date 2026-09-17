@@ -65,6 +65,38 @@
       appearance="outline"
       class="full-width">
 
+      <mat-label>Role</mat-label>
+
+      <mat-select
+        formControlName="role">
+
+        @for (role of availableRoles; track role) {
+          <mat-option [value]="role">
+            {{ formatRole(role) }}
+          </mat-option>
+        }
+
+      </mat-select>
+
+      <mat-error
+        *ngIf="
+          createUserForm.controls.role.hasError('required')
+        ">
+        Role is required
+      </mat-error>
+
+    </mat-form-field>
+
+    @if (currentRole !== Role.SUPER_ADMIN) {
+      <div class="app-muted-text">
+        Admin users can create only normal users.
+      </div>
+    }
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
       <mat-label>
         Temporary Password
       </mat-label>
@@ -119,16 +151,15 @@
     type="button"
     (click)="cancel()"
     [disabled]="loading">
-
     Cancel
-
   </button>
 
   <button
     mat-raised-button
     type="button"
+    class="app-button"
     (click)="createUser()"
-    [disabled]="loading">
+    [disabled]="loading || createUserForm.invalid">
 
     <mat-spinner
       *ngIf="loading"

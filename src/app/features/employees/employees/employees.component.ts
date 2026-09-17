@@ -107,7 +107,7 @@ export class EmployeesComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly authService = inject(AuthService);
 
-  readonly isAdmin = this.authService.isAdmin();
+  readonly canManageEmployees = this.authService.canManageEmployees();
 
   @ViewChild('searchInput')
   searchInput!: ElementRef<HTMLInputElement>;
@@ -192,7 +192,7 @@ export class EmployeesComponent implements OnInit {
     'department',
     'salary',
     'joiningDate',
-    'actions'
+    ...(this.canManageEmployees ? ['actions'] : [])
   ];
 
   departments: string[] = [];

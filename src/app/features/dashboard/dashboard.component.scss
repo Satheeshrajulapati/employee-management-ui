@@ -1,0 +1,461 @@
+.dashboard-page {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+
+.dashboard-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 20px;
+}
+
+.stat-icon {
+  width: 54px;
+  height: 54px;
+
+  flex: 0 0 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  mat-icon {
+    width: 26px;
+    height: 26px;
+
+    font-size: 26px;
+  }
+}
+
+.employees-icon {
+  background: #eaf2ff;
+  color: #2563eb;
+}
+
+.departments-icon {
+  background: #eaf8ef;
+  color: #16a34a;
+}
+
+.users-icon {
+  background: #fff7df;
+  color: #d99a00;
+}
+
+.admins-icon {
+  background: #ffecef;
+  color: #e54865;
+}
+
+.stat-content {
+  min-width: 0;
+}
+
+.stat-value {
+  margin-bottom: 5px;
+
+  color: #1e293b;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+.stat-label {
+  overflow: hidden;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================
+   MAIN CHARTS
+========================= */
+
+.dashboard-charts {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+.chart-card {
+  min-width: 0;
+
+  padding: 24px;
+}
+
+.chart-header {
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  position: relative;
+
+  width: 100%;
+  height: 300px;
+}
+
+/* =========================
+   BOTTOM SECTION
+========================= */
+
+.dashboard-bottom {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+/* =========================
+   DEPARTMENT OVERVIEW
+========================= */
+
+.department-overview-card {
+  min-width: 0;
+
+  padding: 24px;
+}
+
+.department-bar-container {
+  position: relative;
+
+  width: 100%;
+  height: 300px;
+}
+
+/* =========================
+   RECENT EMPLOYEES
+========================= */
+
+.recent-employees-card {
+  min-width: 0;
+
+  padding: 24px;
+}
+
+.recent-header {
+  margin-bottom: 16px;
+}
+
+.recent-list {
+  width: 100%;
+}
+
+.recent-employee {
+  display: grid;
+
+  grid-template-columns:
+    44px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 0;
+
+  border-bottom:
+    1px solid #e5e7eb;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.employee-avatar {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eef2ff;
+  color: #1d4ed8;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.employee-details {
+  min-width: 0;
+}
+
+.employee-name {
+  margin-bottom: 3px;
+
+  overflow: hidden;
+
+  color: #1e293b;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employee-email {
+  overflow: hidden;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employee-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 6px;
+}
+
+.employee-date {
+  color: #64748b;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.dashboard-error {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 24px;
+
+  mat-icon {
+    flex-shrink: 0;
+  }
+}
+
+/* =========================
+   SMALL DESKTOP
+========================= */
+
+@media (max-width: 1200px) {
+
+  .dashboard-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1023px) {
+
+  .dashboard-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container,
+  .department-bar-container {
+    height: 290px;
+  }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 767px) {
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    gap: 14px;
+
+    padding: 16px;
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-basis: 48px;
+
+    border-radius: 12px;
+
+    mat-icon {
+      width: 24px;
+      height: 24px;
+
+      font-size: 24px;
+    }
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+  }
+
+  .dashboard-charts,
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+
+    margin-bottom: 16px;
+  }
+
+  .chart-card,
+  .department-overview-card,
+  .recent-employees-card {
+    padding: 16px;
+  }
+
+  .chart-header {
+    margin-bottom: 16px;
+  }
+
+  .chart-container,
+  .department-bar-container {
+    height: 260px;
+  }
+
+  .recent-header {
+    margin-bottom: 12px;
+  }
+
+  .recent-employee {
+    grid-template-columns:
+      40px
+      minmax(0, 1fr);
+
+    gap: 10px 12px;
+
+    padding: 13px 0;
+  }
+
+  .employee-avatar {
+    width: 38px;
+    height: 38px;
+
+    grid-row: 1 / span 2;
+  }
+
+  .employee-meta {
+    grid-column: 2;
+
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .chart-card,
+  .department-overview-card,
+  .recent-employees-card {
+    padding: 14px;
+  }
+
+  .chart-container,
+  .department-bar-container {
+    height: 230px;
+  }
+
+  .employee-email {
+    max-width: 210px;
+  }
+
+}
+
+/* =========================
+   VERY SMALL MOBILE
+========================= */
+
+@media (max-width: 360px) {
+
+  .chart-container,
+  .department-bar-container {
+    height: 210px;
+  }
+
+  .employee-email {
+    max-width: 170px;
+  }
+
+}

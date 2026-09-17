@@ -6,7 +6,6 @@ import {
   Validators
 } from '@angular/forms';
 import { finalize } from 'rxjs';
-
 import {
   MatDialogModule,
   MatDialogRef
@@ -20,8 +19,11 @@ import {
   MatSnackBarModule
 } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 
 import { UserService } from '../../../../core/services/user.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Role } from '../../../../core/enums/role.enum';
 
 @Component({
   selector: 'app-create-user-dialog',
@@ -35,7 +37,8 @@ import { UserService } from '../../../../core/services/user.service';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSelectModule
   ],
   templateUrl: './create-user-dialog.component.html',
   styleUrl: './create-user-dialog.component.scss'
@@ -44,9 +47,20 @@ export class CreateUserDialogComponent {
 
   private readonly fb = inject(FormBuilder);
   private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
   private readonly dialogRef =
     inject(MatDialogRef<CreateUserDialogComponent>);
   private readonly snackBar = inject(MatSnackBar);
+
+  readonly currentRole =
+    this.authService.getRole();
+
+  readonly Role = Role;
+
+  readonly availableRoles =
+    this.currentRole === Role.SUPER_ADMIN
+      ? [Role.ADMIN, Role.USER]
+      : [Role.USER];
 
   loading = false;
   hidePassword = true;
@@ -73,6 +87,10 @@ export class CreateUserDialogComponent {
           Validators.required,
           Validators.minLength(8)
         ]
+      ],
+      role: [
+        Role.USER,
+        Validators.required
       ]
     });
 
@@ -96,11 +114,10 @@ export class CreateUserDialogComponent {
         })
       )
       .subscribe({
-
         next: user => {
 
           this.snackBar.open(
-            'User created successfully',
+            `${this.formatRole(user.role)} created successfully`,
             'Close',
             {
               duration: 3000
@@ -124,8 +141,25 @@ export class CreateUserDialogComponent {
             }
           );
         }
-
       });
+  }
+
+  formatRole(role: Role): string {
+
+    switch (role) {
+
+      case Role.SUPER_ADMIN:
+        return 'Super Admin';
+
+      case Role.ADMIN:
+        return 'Admin';
+
+      case Role.USER:
+        return 'User';
+
+      default:
+        return 'User';
+    }
   }
 
   cancel(): void {

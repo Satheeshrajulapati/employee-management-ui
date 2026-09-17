@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
+import { superAdminGuard } from './core/guards/super-admin.guard';
 
 export const routes: Routes = [
 
@@ -13,6 +13,7 @@ export const routes: Routes = [
 
   {
     path: 'login',
+
     loadComponent: () =>
       import(
         './features/auth/login/login.component'
@@ -23,7 +24,11 @@ export const routes: Routes = [
 
   {
     path: 'change-password',
-    canActivate: [authGuard],
+
+    canActivate: [
+      authGuard
+    ],
+
     loadComponent: () =>
       import(
         './features/auth/change-password/change-password.component'
@@ -34,6 +39,7 @@ export const routes: Routes = [
 
   {
     path: '',
+
     loadComponent: () =>
       import(
         './core/layout/layout.component'
@@ -41,12 +47,15 @@ export const routes: Routes = [
         m => m.LayoutComponent
       ),
 
-    canActivate: [authGuard],
+    canActivate: [
+      authGuard
+    ],
 
     children: [
 
       {
         path: 'dashboard',
+
         loadComponent: () =>
           import(
             './features/dashboard/dashboard.component'
@@ -57,6 +66,7 @@ export const routes: Routes = [
 
       {
         path: 'employees',
+
         loadComponent: () =>
           import(
             './features/employees/employees/employees.component'
@@ -67,7 +77,11 @@ export const routes: Routes = [
 
       {
         path: 'admin/users',
-        canActivate: [adminGuard],
+
+        canActivate: [
+          adminGuard
+        ],
+
         loadComponent: () =>
           import(
             './features/admin/user-management/user-management.component'
@@ -78,6 +92,11 @@ export const routes: Routes = [
 
       {
         path: 'settings',
+
+        canActivate: [
+          superAdminGuard
+        ],
+
         loadComponent: () =>
           import(
             './features/settings/settings.component'

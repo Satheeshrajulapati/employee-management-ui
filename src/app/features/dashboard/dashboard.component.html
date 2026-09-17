@@ -1,3 +1,333 @@
-<h1>Dashboard</h1>
+<div class="dashboard-page">
 
-<p>Welcome to Employee Management System.</p>
+  <!-- Page Header -->
+  <div class="app-page-header">
+    <div>
+      <h1 class="app-page-title">
+        Dashboard
+      </h1>
+
+      <p class="app-page-subtitle">
+        Overview of your employee management system
+      </p>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+
+    <div class="app-loading-container">
+      <app-loading-spinner />
+    </div>
+
+  } @else if (errorMessage()) {
+
+    <!-- Error -->
+    <div class="app-card dashboard-error">
+      <mat-icon>error_outline</mat-icon>
+
+      <div>
+        {{ errorMessage() }}
+      </div>
+    </div>
+
+  } @else if (stats()) {
+
+    <!-- =========================
+         KPI CARDS
+    ========================== -->
+
+    <div class="dashboard-stats">
+
+      <!-- Total Employees -->
+      <div class="app-card stat-card">
+
+        <div class="stat-icon employees-icon">
+          <mat-icon>groups</mat-icon>
+        </div>
+
+        <div class="stat-content">
+
+          <div class="stat-value">
+            {{ stats()!.totalEmployees }}
+          </div>
+
+          <div class="stat-label">
+            Total Employees
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Departments -->
+      <div class="app-card stat-card">
+
+        <div class="stat-icon departments-icon">
+          <mat-icon>business</mat-icon>
+        </div>
+
+        <div class="stat-content">
+
+          <div class="stat-value">
+            {{ stats()!.totalDepartments }}
+          </div>
+
+          <div class="stat-label">
+            Departments
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Active Users -->
+      <div class="app-card stat-card">
+
+        <div class="stat-icon users-icon">
+          <mat-icon>person</mat-icon>
+        </div>
+
+        <div class="stat-content">
+
+          <div class="stat-value">
+            {{ stats()!.activeUsers }}
+          </div>
+
+          <div class="stat-label">
+            Active Users
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Admins -->
+      <div class="app-card stat-card">
+
+        <div class="stat-icon admins-icon">
+          <mat-icon>shield</mat-icon>
+        </div>
+
+        <div class="stat-content">
+
+          <div class="stat-value">
+            {{ stats()!.totalAdmins }}
+          </div>
+
+          <div class="stat-label">
+            Admins
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================
+         MAIN CHARTS
+    ========================== -->
+
+    <div class="dashboard-charts">
+
+      <!-- Employees by Department -->
+      <div class="app-card chart-card">
+
+        <div class="chart-header">
+
+          <h2 class="app-section-title">
+            Employees by Department
+          </h2>
+
+          <p class="app-section-subtitle">
+            Employee distribution across departments
+          </p>
+
+        </div>
+
+        @if (stats()!.employeesByDepartment.length > 0) {
+
+          <div class="chart-container">
+
+            <canvas
+              baseChart
+              [type]="departmentChartType"
+              [data]="departmentChartData()"
+              [options]="departmentChartOptions">
+            </canvas>
+
+          </div>
+
+        } @else {
+
+          <div class="app-empty-state">
+            No department statistics available.
+          </div>
+
+        }
+
+      </div>
+
+      <!-- Employee Joining Trend -->
+      <div class="app-card chart-card">
+
+        <div class="chart-header">
+
+          <h2 class="app-section-title">
+            Employee Joining Trend
+          </h2>
+
+          <p class="app-section-subtitle">
+            Employees joined over time
+          </p>
+
+        </div>
+
+        @if (stats()!.joiningTrend.length > 0) {
+
+          <div class="chart-container">
+
+            <canvas
+              baseChart
+              [type]="joiningChartType"
+              [data]="joiningChartData()"
+              [options]="joiningChartOptions">
+            </canvas>
+
+          </div>
+
+        } @else {
+
+          <div class="app-empty-state">
+            No joining trend available.
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- =========================
+         BOTTOM SECTION
+    ========================== -->
+
+    <div class="dashboard-bottom">
+
+      <!-- Department Overview -->
+      <div class="app-card department-overview-card">
+
+        <div class="chart-header">
+
+          <h2 class="app-section-title">
+            Department Overview
+          </h2>
+
+          <p class="app-section-subtitle">
+            Employee count by department
+          </p>
+
+        </div>
+
+        @if (stats()!.employeesByDepartment.length > 0) {
+
+          <div class="department-bar-container">
+
+            <canvas
+              baseChart
+              [type]="departmentBarChartType"
+              [data]="departmentBarChartData()"
+              [options]="departmentBarChartOptions">
+            </canvas>
+
+          </div>
+
+        } @else {
+
+          <div class="app-empty-state">
+            No department statistics available.
+          </div>
+
+        }
+
+      </div>
+
+      <!-- Recent Employees -->
+      <div class="app-card recent-employees-card">
+
+        <div class="recent-header">
+
+          <div>
+
+            <h2 class="app-section-title">
+              Recent Employees
+            </h2>
+
+            <p class="app-section-subtitle">
+              Recently joined employees
+            </p>
+
+          </div>
+
+        </div>
+
+        @if (stats()!.recentEmployees.length > 0) {
+
+          <div class="recent-list">
+
+            @for (
+              employee of stats()!.recentEmployees;
+              track employee.id
+            ) {
+
+              <div class="recent-employee">
+
+                <!-- Avatar -->
+                <div class="employee-avatar">
+                  {{ getInitial(employee.employeeName) }}
+                </div>
+
+                <!-- Employee Info -->
+                <div class="employee-details">
+
+                  <div class="employee-name">
+                    {{ employee.employeeName }}
+                  </div>
+
+                  <div class="employee-email">
+                    {{ employee.email }}
+                  </div>
+
+                </div>
+
+                <!-- Department + Joining Date -->
+                <div class="employee-meta">
+
+                  <span class="app-badge app-badge-primary">
+                    {{ employee.department }}
+                  </span>
+
+                  <span class="employee-date">
+                    {{ employee.joiningDate | date:'dd-MMM-yyyy' }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="app-empty-state">
+            No employees available.
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

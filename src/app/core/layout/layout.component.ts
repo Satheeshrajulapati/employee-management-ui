@@ -8,11 +8,13 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
+
   imports: [
     RouterLink,
     RouterLinkActive,
@@ -21,37 +23,68 @@ import { AuthService } from '../services/auth.service';
     MatButtonModule,
     MatMenuModule
   ],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+
+  templateUrl:
+    './layout.component.html',
+
+  styleUrl:
+    './layout.component.scss'
 })
 export class LayoutComponent {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
 
-  readonly username = this.authService.getUsername();
-  readonly role = this.authService.getRole();
+  private readonly authService =
+    inject(AuthService);
+
+  private readonly router =
+    inject(Router);
+
+  readonly username =
+    this.authService.getUsername();
+
+  readonly userInitial =
+    this.username?.charAt(0).toUpperCase() ?? 'U';
+
+  readonly roleLabel =
+    this.authService.getRoleLabel();
 
   sidebarOpen = false;
 
   toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
+    this.sidebarOpen =
+      !this.sidebarOpen;
   }
 
   closeSidebar(): void {
     this.sidebarOpen = false;
   }
 
-  isAdmin(): boolean {
-    return this.authService.isAdmin();
+  canManageUsers(): boolean {
+    return this.authService
+      .canManageUsers();
+  }
+
+  canAccessSettings(): boolean {
+    return this.authService
+      .canAccessSettings();
   }
 
   goToChangePassword(): void {
-    this.router.navigate(['/change-password']);
+
+    this.closeSidebar();
+
+    this.router.navigate([
+      '/change-password'
+    ]);
   }
 
   logout(): void {
+
     this.closeSidebar();
+
     this.authService.logout();
-    this.router.navigate(['/login']);
+
+    this.router.navigate([
+      '/login'
+    ]);
   }
 }

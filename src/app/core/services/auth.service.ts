@@ -27,20 +27,34 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = `${environment.apiUrl}/auth`;
+
+  private readonly apiUrl =
+    `${environment.apiUrl}/auth`;
 
   private readonly storageKeys = {
     token: 'token',
     mustChangePassword: 'mustChangePassword'
   } as const;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient
+  ) {}
 
-  login(username: string, password: string): Observable<AuthResponse> {
-    const request: LoginRequest = { username, password };
+  login(
+    username: string,
+    password: string
+  ): Observable<AuthResponse> {
+
+    const request: LoginRequest = {
+      username,
+      password
+    };
 
     return this.http
-      .post<AuthResponse>(`${this.apiUrl}/login`, request)
+      .post<AuthResponse>(
+        `${this.apiUrl}/login`,
+        request
+      )
       .pipe(
         tap(response => {
           if (response.token) {
@@ -54,14 +68,20 @@ export class AuthService {
     currentPassword: string,
     newPassword: string
   ): Observable<void> {
+
     return this.http.put<void>(
       `${environment.apiUrl}/account/change-password`,
-      { currentPassword, newPassword }
+      {
+        currentPassword,
+        newPassword
+      }
     );
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.storageKeys.token);
+    return localStorage.getItem(
+      this.storageKeys.token
+    );
   }
 
   getUsername(): string | null {
@@ -69,55 +89,118 @@ export class AuthService {
   }
 
   getRole(): Role | null {
-    const role = this.getTokenPayload()?.role;
 
-    return role && Object.values(Role).includes(role)
+    const role =
+      this.getTokenPayload()?.role;
+
+    return role &&
+      Object.values(Role).includes(role)
       ? role
       : null;
   }
 
+  getRoleLabel(): string {
+
+    switch (this.getRole()) {
+
+      case Role.SUPER_ADMIN:
+        return 'Super Admin';
+
+      case Role.ADMIN:
+        return 'Admin';
+
+      case Role.USER:
+        return 'User';
+
+      default:
+        return '';
+    }
+  }
+
   mustChangePassword(): boolean {
+
     return localStorage.getItem(
       this.storageKeys.mustChangePassword
     ) === 'true';
   }
 
-  setMustChangePassword(value: boolean): void {
+  setMustChangePassword(
+    value: boolean
+  ): void {
+
     localStorage.setItem(
       this.storageKeys.mustChangePassword,
       String(value)
     );
   }
 
+  isSuperAdmin(): boolean {
+    return this.getRole() ===
+      Role.SUPER_ADMIN;
+  }
+
   isAdmin(): boolean {
-    return this.getRole() === Role.ADMIN;
+    return this.getRole() ===
+      Role.ADMIN;
   }
 
   isUser(): boolean {
-    return this.getRole() === Role.USER;
+    return this.getRole() ===
+      Role.USER;
+  }
+
+  canManageUsers(): boolean {
+
+    const role = this.getRole();
+
+    return role === Role.SUPER_ADMIN ||
+      role === Role.ADMIN;
+  }
+
+  canManageEmployees(): boolean {
+
+    const role = this.getRole();
+
+    return role === Role.SUPER_ADMIN ||
+      role === Role.ADMIN;
+  }
+
+  canAccessSettings(): boolean {
+    return this.isSuperAdmin();
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken() && !this.isTokenExpired();
+
+    return !!this.getToken() &&
+      !this.isTokenExpired();
   }
 
   isTokenExpired(): boolean {
-    const expiry = this.getTokenPayload()?.exp;
+
+    const expiry =
+      this.getTokenPayload()?.exp;
 
     if (!expiry) {
       return true;
     }
 
-    return expiry < Math.floor(Date.now() / 1000);
+    return expiry <
+      Math.floor(Date.now() / 1000);
   }
 
   logout(): void {
-    Object.values(this.storageKeys).forEach(key =>
+
+    Object.values(
+      this.storageKeys
+    ).forEach(key =>
       localStorage.removeItem(key)
     );
   }
 
-  private storeAuthData(response: AuthResponse): void {
+  private storeAuthData(
+    response: AuthResponse
+  ): void {
+
     if (!response.token) {
       return;
     }
@@ -132,7 +215,9 @@ export class AuthService {
     );
   }
 
-  private getTokenPayload(): JwtPayload | null {
+  private getTokenPayload():
+    JwtPayload | null {
+
     const token = this.getToken();
 
     if (!token) {
@@ -140,10 +225,13 @@ export class AuthService {
     }
 
     try {
+
       return JSON.parse(
         atob(token.split('.')[1])
       ) as JwtPayload;
+
     } catch {
+
       return null;
     }
   }
